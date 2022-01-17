@@ -15,7 +15,7 @@ public class PlayerShip : MonoBehaviour
 {
     public Transform firePoint; // 弾を発射する位置を取得する
     public GameObject bulletPrefab;
-    public Rigidbody2D rb2D;
+    public GameObject explosion;
 
     // 約0.02秒に1回実行される
     void Update()
@@ -41,5 +41,31 @@ public class PlayerShip : MonoBehaviour
             SoundManager.instance.PlaySE(SoundManager.SE.Shoot);
             Instantiate(bulletPrefab, firePoint.position, transform.rotation);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("EnemyBullet"))
+        {
+            Boom();
+            Destroy(collision.gameObject);
+        }
+        else if (collision.CompareTag("BossEnemy"))
+        {
+            Boom();
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    // ぶつかった時の処理
+    void Boom()
+    {
+        GameController.instance.GameOver(); // ゲームオーバー
+        SoundManager.instance.PlaySE(SoundManager.SE.Boom); // 爆破音を鳴らす
+        Instantiate(explosion, transform.position, transform.rotation); // 爆破エフェクトを発動する
+        Destroy(gameObject); // PlayerShipを破壊する
     }
 }

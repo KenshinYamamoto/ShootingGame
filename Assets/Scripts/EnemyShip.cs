@@ -7,14 +7,23 @@ using UnityEngine;
 // “G‚É’e‚ª“–‚½‚Á‚½‚ç”š”­‚·‚é
 // “G‚ÆPlayer‚ª“–‚½‚Á‚½‚ç”š”­‚·‚é
 
+// “G‚ª’e‚ğ”­Ë‚·‚é
+// E’e‚ğ‚Â‚­‚é
+// E’e‚ÌˆÚ“®‚ğÀ‘•‚·‚é
+// E”­Ëƒ|ƒCƒ“ƒg‚ğ‚Â‚­‚é
+// E“G‚©‚ç’e‚ğ¶¬‚·‚é
+
 public class EnemyShip : MonoBehaviour
 {
     public GameObject explosion; // ”j‰óƒGƒtƒFƒNƒg‚ÌPrefab;
+    public GameObject enemyBulletPrefab; // “G‚Ì’e
 
     float offset;
     void Start()
     {
+        // —h‚ê•û‚ğƒ‰ƒ“ƒ_ƒ€‚É‚·‚é
         offset = Random.Range(0, 2 * Mathf.PI);
+        InvokeRepeating("Shot", 1f, 1f);
     }
 
     // Update is called once per frame
@@ -30,6 +39,12 @@ public class EnemyShip : MonoBehaviour
         }
     }
 
+    void Shot()
+    {
+        //SoundManager.instance.PlaySE(SoundManager.SE.Shoot);
+        Instantiate(enemyBulletPrefab, transform.position, transform.rotation);
+    }
+
     // “G‚É’e‚ª“–‚½‚Á‚½‚ç”š”­‚·‚é
     // “–‚½‚è”»’è‚ÌŠî‘b’m¯
     // “–‚½‚è”»’è‚ğs‚¤‚É‚Í
@@ -40,7 +55,6 @@ public class EnemyShip : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // collision‚É‚Ô‚Â‚©‚Á‚½‘Šè‚Ìî•ñ‚ª“ü‚Á‚Ä‚¢‚é
-        DestroyPrefab(collision);
         if (collision.CompareTag("Player"))
         {
             Instantiate(explosion, collision.transform.position, collision.transform.rotation); // Player‚ª”š”j‚³‚ê‚éƒGƒtƒFƒNƒg
@@ -50,6 +64,11 @@ public class EnemyShip : MonoBehaviour
         {
             GameController.instance.AddScore(); // ƒXƒRƒA‰ÁZ
         }
+        else
+        {
+            return;
+        }
+        DestroyPrefab(collision);
     }
 
     void DestroyPrefab(Collider2D collision)

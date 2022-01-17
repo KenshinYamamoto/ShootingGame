@@ -927,7 +927,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 403e798d4bfcc9d4ba226d01059adb4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 7927427736006664480, guid: 7866b63ee50057348a1748b5910c6f62,
+  enemyPrefab: {fileID: 3039864903663847512, guid: 7866b63ee50057348a1748b5910c6f62,
+    type: 3}
+  bossEnemyPrefab: {fileID: 4680919898794248412, guid: e1bc1ef8906333449891c168da5d1d41,
     type: 3}
 --- !u!4 &1244517619
 Transform:
@@ -1390,7 +1392,8 @@ MonoBehaviour:
   firePoint: {fileID: 1029299460}
   bulletPrefab: {fileID: 7084868151339486767, guid: dec085d5c1d532d40a3bf7e576df52f2,
     type: 3}
-  rb2D: {fileID: 0}
+  explosion: {fileID: 5909094936269487628, guid: 7b709e6bc52b3c944a92eb1fb92c373a,
+    type: 3}
 --- !u!58 &1699151291
 CircleCollider2D:
   m_ObjectHideFlags: 0
