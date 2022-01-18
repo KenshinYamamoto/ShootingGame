@@ -15,7 +15,6 @@ public class PlayerShip : MonoBehaviour
 {
     public Transform firePoint; // 弾を発射する位置を取得する
     public GameObject bulletPrefab;
-    public GameObject explosion;
 
     // 約0.02秒に1回実行される
     void Update()
@@ -28,7 +27,7 @@ public class PlayerShip : MonoBehaviour
     {
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
-        Vector3 nextPosition = transform.position + new Vector3(x, y, 0) * Time.deltaTime * 15f;
+        Vector3 nextPosition = transform.position + new Vector3(x, y, 0) * Time.deltaTime * ParamsSO.Entity.playerSpeed;
         // x:(-8,8), y:(-4,4)
         nextPosition = new Vector3(Mathf.Clamp(nextPosition.x, -8f, 8f), Mathf.Clamp(nextPosition.y, -4f, 4f), nextPosition.z); // Playerの範囲制御
         transform.position = nextPosition;
@@ -36,7 +35,7 @@ public class PlayerShip : MonoBehaviour
 
     void Shoot()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !GameController.instance.isClear)
         {
             SoundManager.instance.PlaySE(SoundManager.SE.Shoot);
             Instantiate(bulletPrefab, firePoint.position, transform.rotation);
@@ -63,9 +62,13 @@ public class PlayerShip : MonoBehaviour
     // ぶつかった時の処理
     void Boom()
     {
-        GameController.instance.GameOver(); // ゲームオーバー
-        SoundManager.instance.PlaySE(SoundManager.SE.Boom); // 爆破音を鳴らす
-        Instantiate(explosion, transform.position, transform.rotation); // 爆破エフェクトを発動する
-        Destroy(gameObject); // PlayerShipを破壊する
+        // ゲームクリアしていない場合
+        if (!GameController.instance.isClear)
+        {
+            GameController.instance.GameOver(); // ゲームオーバー
+            SoundManager.instance.PlaySE(SoundManager.SE.Boom); // 爆破音を鳴らす
+            EffectManager.effectManager.PlayEffect(transform);
+            Destroy(gameObject); // PlayerShipを破壊する
+        }
     }
 }

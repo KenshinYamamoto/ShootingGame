@@ -15,7 +15,6 @@ using UnityEngine;
 
 public class EnemyShip : MonoBehaviour
 {
-    public GameObject explosion; // 破壊エフェクトのPrefab;
     public GameObject enemyBulletPrefab; // 敵の弾
 
     float offset;
@@ -23,10 +22,9 @@ public class EnemyShip : MonoBehaviour
     {
         // 揺れ方をランダムにする
         offset = Random.Range(0, 2 * Mathf.PI);
-        InvokeRepeating("Shot", 1f, 1f);
+        InvokeRepeating("Shot", ParamsSO.Entity.enemyBulletShot, ParamsSO.Entity.enemyBulletTime);
     }
 
-    // Update is called once per frame
     void Update()
     {
         // Time.frameCountは、時間が経つにつれて値が大きくなっていくもの
@@ -41,7 +39,6 @@ public class EnemyShip : MonoBehaviour
 
     void Shot()
     {
-        //SoundManager.instance.PlaySE(SoundManager.SE.Shoot);
         Instantiate(enemyBulletPrefab, transform.position, transform.rotation);
     }
 
@@ -57,12 +54,12 @@ public class EnemyShip : MonoBehaviour
         // collisionにぶつかった相手の情報が入っている
         if (collision.CompareTag("Player"))
         {
-            Instantiate(explosion, collision.transform.position, collision.transform.rotation); // Playerが爆破されるエフェクト
+            EffectManager.effectManager.PlayEffect(collision.transform); // Playerが爆破されるエフェクト
             GameController.instance.GameOver(); // ゲームオーバー
         }
         else if(collision.CompareTag("Bullet"))
         {
-            GameController.instance.AddScore(); // スコア加算
+            GameController.instance.AddScore(0); // スコア加算(引数はボスを倒したときに加算される分なので、0で良いです)
         }
         else
         {
@@ -74,7 +71,7 @@ public class EnemyShip : MonoBehaviour
     void DestroyPrefab(Collider2D collision)
     {
         SoundManager.instance.PlaySE(SoundManager.SE.Boom);
-        Instantiate(explosion, transform.position, transform.rotation);
+        EffectManager.effectManager.PlayEffect(transform);
         Destroy(gameObject);
         Destroy(collision.gameObject);
     }

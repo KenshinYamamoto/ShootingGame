@@ -6,7 +6,7 @@ public class EnemyBullet : MonoBehaviour
 {
     void Update()
     {
-        transform.position -= new Vector3(0, 8f, 0) * Time.deltaTime;
+        transform.position -= new Vector3(0, ParamsSO.Entity.enemyBulletSpeed, 0) * Time.deltaTime;
 
         if(transform.position.y < -5.3f)
         {

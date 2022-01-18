@@ -12,8 +12,8 @@ public class EnemyGenerator : MonoBehaviour
     void Start()
     {
         // ŒJ‚è•Ô‚µŠÖ”‚ğÀs‚·‚é
-        InvokeRepeating("Spawn", 2f, 0.5f); // SpawnŠÖ”‚ğ,2•bŒã‚É,0.5•b‚İ‚ÅÀs‚·‚é
-        Invoke("BossSpawn", 4f);
+        InvokeRepeating("Spawn", ParamsSO.Entity.encountenemyTime, ParamsSO.Entity.span); // SpawnŠÖ”‚ğ,2•bŒã‚É,0.5•b‚İ‚ÅÀs‚·‚é
+        Invoke("BossSpawn", ParamsSO.Entity.encountBossTime);
     }
 
     // ¶¬‚·‚é
@@ -27,11 +27,5 @@ public class EnemyGenerator : MonoBehaviour
     {
         Instantiate(bossEnemyPrefab, transform.position, transform.rotation);
         CancelInvoke();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

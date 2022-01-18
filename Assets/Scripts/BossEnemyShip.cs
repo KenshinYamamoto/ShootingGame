@@ -22,6 +22,7 @@ public class BossEnemyShip : MonoBehaviour
 {
     public BossEnemyBullet bulletPrefab;
     GameObject player;
+    int hp = 10;
 
     void Start()
     {
@@ -123,6 +124,26 @@ public class BossEnemyShip : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
             PlayerAimShot(n, 8f);
+        }
+    }
+
+    void DiscountHP()
+    {
+        hp--;
+        if(hp <= 0)
+        {
+            Destroy(gameObject);
+            EffectManager.effectManager.PlayBossEffect(transform);
+            SoundManager.instance.PlaySE(SoundManager.SE.Boom);
+            GameController.instance.GameClear();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bullet"))
+        {
+            DiscountHP();
         }
     }
 }

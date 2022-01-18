@@ -25,11 +25,16 @@ public class GameController : MonoBehaviour
 
     public GameObject gameOverText;
     public Text scoreText;
+    public GameObject gameClearText;
+    public bool isClear;
+    public GameObject backPanel;
     int score = 0;
 
     private void Start()
     {
         gameOverText.SetActive(false);
+        gameClearText.SetActive(false);
+        backPanel.SetActive(false);
         scoreText.text = "SCORE:" + score;
     }
 
@@ -39,12 +44,16 @@ public class GameController : MonoBehaviour
         {
             SceneManager.LoadScene("Main");
         }
+        else if(gameClearText.activeSelf && Input.GetKeyDown(KeyCode.Space))
+        {
+            backPanel.SetActive(true);
+        }
     }
 
     // ÉXÉRÉAâ¡éZ
-    public void AddScore()
+    public void AddScore(int bonusPoint)
     {
-        score += 100;
+        score += ParamsSO.Entity.addScore + bonusPoint;
         scoreText.text = "SCORE:" + score;
     }
 
@@ -52,5 +61,21 @@ public class GameController : MonoBehaviour
     public void GameOver()
     {
         gameOverText.SetActive(true);
+    }
+
+    public void GameClear()
+    {
+        gameClearText.SetActive(true);
+        isClear = true;
+    }
+
+    public void OnContinueButton()
+    {
+        SceneManager.LoadScene("Main");
+    }
+
+    public void OnToTitleButton()
+    {
+
     }
 }
